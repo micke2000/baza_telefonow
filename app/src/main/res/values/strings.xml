@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">baza_telefonow</string>
+    <string name="error_word">Blad w danych!</string>
+</resources>
