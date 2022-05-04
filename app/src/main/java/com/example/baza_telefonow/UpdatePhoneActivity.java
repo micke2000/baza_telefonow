@@ -3,6 +3,7 @@ package com.example.baza_telefonow;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class UpdatePhoneActivity extends AppCompatActivity {
         mEditWWWText = findViewById(R.id.edit_www);
         final Button button = findViewById(R.id.button_save);
         final Button butCancel = findViewById(R.id.button_cancel);
+        final Button butOpenWebsite = findViewById(R.id.open_website);
         Intent main = getIntent();
         mEditWordText.setText(main.getStringExtra("model"));
         mEditProducerText.setText(main.getStringExtra("producer"));
@@ -53,6 +55,10 @@ public class UpdatePhoneActivity extends AppCompatActivity {
         butCancel.setOnClickListener(view -> {
             setResult(RESULT_CANCELED);
             finish();
+        });
+        butOpenWebsite.setOnClickListener(view -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+mEditWWWText.getText().toString()));
+            startActivity(browserIntent);
         });
     }
 }
