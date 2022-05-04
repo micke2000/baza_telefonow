@@ -34,6 +34,14 @@ public class Word {
         mAnroidVer = andver;
         mWWW = www;
     }
+    public Word(@NonNull Long id,@NonNull String word, @NonNull String prod, @NonNull String andver,@NonNull String www) {
+        model = word;
+        mProducent = prod;
+        mAnroidVer = andver;
+        mWWW = www;
+        mId = id;
+    }
+
 
     public long getId() {
         return mId;

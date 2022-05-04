@@ -24,11 +24,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private WordViewModel mWordViewModel;
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
+    private ActivityResultLauncher<Intent> mUpdateResultLauncher;
     private FloatingActionButton mMainFab;
     private Button buttonClearAll;
     private WordListAdapter mAdapter;
     private SelectionTracker<Long> mSelectionTracker;
     private FloatingActionButton mDeleteFab;
+    private FloatingActionButton mUpdateFab;
     private boolean mIsMainFabAdd = true;
     private WordItemKeyProvider mWordItemKeyProvider;
 
@@ -59,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
                         mWordViewModel.insert(word);
                     }
                 });
+        mUpdateResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        String model = result.getData().getStringExtra("model");
+                        Long id = result.getData().getLongExtra("id",-1);
+                        String producer = result.getData().getStringExtra("producer");
+                        String andoirdVer = result.getData().getStringExtra("andver");
+                        String www = result.getData().getStringExtra("www");
+                        Word word = new Word(id,model,producer,andoirdVer,www);
+                        mWordViewModel.updateWord(word);
+                    }
+                });
         mMainFab = findViewById(R.id.fabMain);
         buttonClearAll = findViewById(R.id.button_clear_all);
         buttonClearAll.setOnClickListener(view -> {
@@ -78,13 +93,18 @@ public class MainActivity extends AppCompatActivity {
                 StorageStrategy.createLongStorage()).build();
         mAdapter.setSelectionTracker(mSelectionTracker);
         mDeleteFab = findViewById(R.id.fabDelete);
+        mUpdateFab = findViewById(R.id.fabUpdate);
         mDeleteFab.setOnClickListener(view -> deleteSelection());
+        mUpdateFab.setOnClickListener(view -> updateSelection());
         mSelectionTracker.addObserver(
                 new SelectionTracker.SelectionObserver<Long>() {
                     @Override
                     public void onSelectionChanged() {
                         //wyświetlamy/chowamy przycisk kasowania
                         updateFabs();
+                        if(mSelectionTracker.getSelection().size() > 1){
+                            mUpdateFab.setVisibility(View.GONE);
+                        }
                         super.onSelectionChanged();
                     }
                     @Override
@@ -100,7 +120,28 @@ public class MainActivity extends AppCompatActivity {
                     }});
     }
 
-        private void mainFabClicked() {
+    private void updateSelection() {
+        Selection<Long> selection=mSelectionTracker.getSelection();
+        int wordPosition=-1;
+        List<Word> wordList=mWordViewModel.getAllWords().getValue();
+        wordPosition=mWordItemKeyProvider.getPosition(selection.iterator().next());
+        Intent intent = new Intent(
+                MainActivity.this, UpdatePhoneActivity.class);
+        Word updatedWord = wordList.get(wordPosition);
+        String model = updatedWord.getWord();
+        String producer = updatedWord.getmProducent();
+        String andVer = updatedWord.getmAnroidVer();
+        String www = updatedWord.getmWWW();
+        Long id = updatedWord.getId();
+        intent.putExtra("model",model);
+        intent.putExtra("id",id);
+        intent.putExtra("producer",producer);
+        intent.putExtra("andver",andVer);
+        intent.putExtra("www",www);
+        mUpdateResultLauncher.launch(intent);
+    }
+
+    private void mainFabClicked() {
             if (mIsMainFabAdd) {
             Intent intent = new Intent(
                     MainActivity.this, NewWordActivity.class);
@@ -123,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
         if (mSelectionTracker.hasSelection())
         {
             mDeleteFab.setVisibility(View.VISIBLE);
+            mUpdateFab.setVisibility(View.VISIBLE);
+            mUpdateFab.setImageDrawable(getDrawable(R.drawable.ic_update_foreground));
             mMainFab.setImageDrawable(
                     getDrawable(R.drawable.ic_baseline_cancel_24));
             mIsMainFabAdd=false;
@@ -130,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             mDeleteFab.setVisibility(View.GONE);
+            mUpdateFab.setVisibility(View.GONE);
             mMainFab.setImageDrawable(
                     getDrawable(R.drawable.ic_baseline_add_24));
             mIsMainFabAdd=true;

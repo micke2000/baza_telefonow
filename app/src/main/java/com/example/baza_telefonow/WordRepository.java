@@ -34,4 +34,9 @@ public class WordRepository {
             mWordDao.deleteWord(word);
         });
     }
+    void updateWord(Word word){
+        WordRoomDatabase.databaseWriteExecutor.execute(()->{
+            mWordDao.updatePhone(word);
+        });
+    }
 }
