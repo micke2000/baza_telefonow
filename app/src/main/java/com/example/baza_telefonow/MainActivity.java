@@ -50,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
+                        String producer = result.getData().getStringExtra("producer");
+                        String andoirdVer = result.getData().getStringExtra("andver");
+                        String www = result.getData().getStringExtra("www");
                         Word word = new Word(result.getData()
                                 .getStringExtra(
-                                        NewWordActivity.EXTRA_REPLY));
+                                        NewWordActivity.EXTRA_REPLY),producer,andoirdVer,www);
                         mWordViewModel.insert(word);
                     }
                 });

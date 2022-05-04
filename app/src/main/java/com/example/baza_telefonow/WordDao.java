@@ -19,7 +19,7 @@ public interface WordDao {
     void deleteAll();
     //zapytania Room są wykonywane w osobnym wątku
     //LiveData powiadamia obserwatora w głównym wątku
-    @Query("SELECT * FROM word_table ORDER BY word ASC")
+    @Query("SELECT * FROM word_table ORDER BY model ASC")
     LiveData<List<Word>> getAlphabetizedWords();
     @Delete
     void deleteWord(Word word);

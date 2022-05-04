@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Word.class}, version = 1, exportSchema = false)
+@Database(entities = {Word.class}, version = 5, exportSchema = false)
 public abstract class WordRoomDatabase extends RoomDatabase {
     public abstract WordDao wordDao();
     //singleton
@@ -41,7 +41,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
                     super.onCreate(db);
                     databaseWriteExecutor.execute(() -> {
                         WordDao dao = INSTANCE.wordDao();
-                        Word[] words = {new Word("Hello"), new Word("World")};
+                        Word[] words = {new Word("Hello","Google","5.3","www.google.com")};
                         for (Word w : words)
                             dao.insert(w);
                     });}};}

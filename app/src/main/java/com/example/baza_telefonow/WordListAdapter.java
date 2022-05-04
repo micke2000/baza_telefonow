@@ -49,15 +49,18 @@ public class WordListAdapter extends
     }
     public class WordViewHolder extends RecyclerView.ViewHolder {
         TextView wordTextView;
+        TextView producerTextView;
         WordItemDetails wordItemDetails;
         public WordViewHolder(@NonNull View itemView) {
             super(itemView);
             wordTextView=itemView.findViewById(R.id.wordTextView);
+            producerTextView=itemView.findViewById(R.id.wordTextView2);
             wordItemDetails=new WordItemDetails();
         }
         public void bindToWordViewHolder(int position, boolean isSelected)
         {
             wordTextView.setText(mWordList.get(position).getWord());
+            producerTextView.setText(mWordList.get(position).getmProducent());
             wordItemDetails.id =mWordList.get(position).getId();
             wordItemDetails.position=position;
             //itemView = główny element wiersza (odziedziczony po

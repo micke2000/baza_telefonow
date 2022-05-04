@@ -11,14 +11,67 @@ public class Word {
     @ColumnInfo(name = "id")
     private long mId;
     @NonNull
-    @ColumnInfo(name = "word")
-    private String mWord;
-    public Word(@NonNull String word) {
-        mWord = word;
-    }
-    //niektóre gettery i settery są wymagane przez Room
-    public long getId() { return mId; }
+    @ColumnInfo(name = "model")
+    public String model;
     @NonNull
-    public String getWord() { return mWord; }
-    public void setId(long mId) { this.mId = mId; }
+    @ColumnInfo(name = "andVer")
+    public String mAnroidVer;
+    @NonNull
+    @ColumnInfo(name = "producent")
+    public String mProducent;
+    @NonNull
+    @ColumnInfo(name = "www")
+    public String mWWW;
+
+    public Word() {
+
+    }
+
+
+    public Word(@NonNull String word, @NonNull String prod, @NonNull String andver,@NonNull String www) {
+        model = word;
+        mProducent = prod;
+        mAnroidVer = andver;
+        mWWW = www;
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    @NonNull
+    public String getWord() {
+        return model;
+    }
+
+    public void setId(long mId) {
+        this.mId = mId;
+    }
+
+    @NonNull
+    public String getmProducent() {
+        return mProducent;
+    }
+
+    @NonNull
+    public String getmAnroidVer() {
+        return mAnroidVer;
+    }
+
+    @NonNull
+    public String getmWWW() {
+        return mWWW;
+    }
+
+    public void setmWWW(@NonNull String mWWW) {
+        this.mWWW = mWWW;
+    }
+
+    public void setmAnroidVer(@NonNull String mAnroidVer) {
+        this.mAnroidVer = mAnroidVer;
+    }
+
+    public void setmProducent(@NonNull String mProducent) {
+        this.mProducent = mProducent;
+    }
 }
